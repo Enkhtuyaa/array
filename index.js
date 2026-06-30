@@ -127,14 +127,12 @@ console.log(addFront(["b"], "a"));
 // Write `hasItem(arr, item)` that RETURNS true/false if item is in arr.
 // Hint: arr.includes(item)
 // your code here
-// function hasItem(arr, item) {
-//   if (arr.includes(item)) {
-//     return true;
-//   } else if()
-// }
-// console.log(hasItem(["cat", "dog"], "dog"));
-// console.log(hasItem(["cat", "dog"], "fish"));
-// console.log(hasItem([], "cat"));
+function hasItem(arr, item) {
+  return arr.includes(item);
+}
+console.log(hasItem(["cat", "dog"], "dog"));
+console.log(hasItem(["cat", "dog"], "fish"));
+console.log(hasItem([], "cat"));
 // TEST 1:  hasItem(["cat","dog"], "dog")   ->  true
 // TEST 2:  hasItem(["cat","dog"], "fish")  ->  false
 // TEST 3:  hasItem([], "cat")              ->  false
@@ -236,12 +234,14 @@ console.log(firstExpensive([50, 99]));
 // ----- 4. reduce (sum) -----
 // Write `total(prices)` that RETURNS the sum using reduce.
 // your code here
-function total(price2){
-let total = price2.reduce((total, item){
-return total + item
-},0)
+function total1(price2) {
+  return price2.reduce((acc, n) => acc + n, 0);
 }
-console.log(total([10, 25, 5, 40, 15]));
+
+console.log(total1([10, 25, 5, 40, 15]));
+console.log(total1([]));
+console.log(total1([7]));
+// console.log(nums.reduce((acc, n) => acc + n, 0));
 // TEST 1:  total([10,25,5,40,15])   ->  95
 // TEST 2:  total([])                ->  0
 // TEST 3:  total([7])               ->  7
@@ -250,8 +250,18 @@ console.log(total([10, 25, 5, 40, 15]));
 // Write `anyFree(prices)` -> true if ANY price is 0.
 // Write `allPositive(prices)` -> true if EVERY price is > 0.
 // your code here
-
-// console.log(anyFree([10, 0, 5]), allPositive([10, 0, 5]));
+function anyFree(price3) {
+  return price3.some((n) => n > 5);
+}
+console.log(anyFree([10, 0, 5]));
+function allPositive(price4) {
+  return price4.every((n) => n > 0);
+}
+console.log(allPositive([10, 0, 5]));
+console.log(allPositive([10, 5]));
+// allPositive([10, 0, 5]));
+// console.log(nums.some((n) => n > 5));
+// console.log(nums.every((n) => n > 0));
 // TEST 1:  anyFree([10,0,5])       ->  true
 // TEST 2:  allPositive([10,0,5])   ->  false
 // TEST 3:  allPositive([10,5])     ->  true
@@ -260,8 +270,13 @@ console.log(total([10, 25, 5, 40, 15]));
 // Write `lowToHigh(prices)` that RETURNS the prices sorted ascending.
 // Hint: numbers need .sort((a,b) => a - b)
 // your code here
-
-// console.log(lowToHigh([10, 25, 5, 40, 15]));
+function lowToHigh(price5) {
+  price5.sort((a, b) => a - b);
+  return price5;
+}
+console.log(lowToHigh([10, 25, 5, 40, 15]));
+console.log(lowToHigh([3, 1, 2]));
+console.log(lowToHigh([2]));
 // TEST 1:  lowToHigh([10,25,5,40,15])   ->  [5,10,15,25,40]
 // TEST 2:  lowToHigh([3,1,2])           ->  [1,2,3]
 // TEST 3:  lowToHigh([2])               ->  [2]
@@ -269,8 +284,13 @@ console.log(total([10, 25, 5, 40, 15]));
 // ----- 7. chain: filter then map -----
 // Write `cheapDoubled(prices)` -> keep prices under 20, then double each.
 // your code here
-
-// console.log(cheapDoubled([10, 25, 5, 40, 15]));
+function cheapDoubled(price6) {
+  let cheapDoubled = price6.filter((item) => item < 20);
+  return cheapDoubled.map((n) => n * 2);
+}
+console.log(cheapDoubled([10, 25, 5, 40, 15]));
+console.log(cheapDoubled([100]));
+console.log(cheapDoubled([5, 5]));
 // TEST 1:  cheapDoubled([10,25,5,40,15])   ->  [20,10,30]
 // TEST 2:  cheapDoubled([100])             ->  []
 // TEST 3:  cheapDoubled([5,5])             ->  [10,10]
@@ -284,13 +304,17 @@ const inventory = [
   { name: "bag", stock: 3 },
   { name: "cup", stock: 0 },
 ];
-// your code here
-
-// console.log(inStockNames(inventory));
+// // your code here
+function inStockNames(items) {
+  let inStockNames = items.filter((stock) => stock > 0);
+  const obj = inventory[0].name;
+  return obj;
+}
+console.log(inStockNames(inventory));
 // TEST 1:  inStockNames(inventory)                        ->  ["pen","bag"]
 // TEST 2:  inStockNames([])                               ->  []
 // TEST 3:  inStockNames([{name:"x",stock:1}])             ->  ["x"]
-MoviesDB;
+MoviesDB: 3;
 /* ============================================================
    ARRAYS 3 — MOVIES DATABASE (boss level)
    ------------------------------------------------------------
@@ -442,6 +466,8 @@ function countMovies(db) {
   return db.length;
 }
 console.log(countMovies(movies)); // 16
+console.log(countMovies([]));
+console.log(countMovies([movies[0]]));
 // TEST 1:  countMovies(movies)   ->  16
 // TEST 2:  countMovies([])       ->  0
 // TEST 3:  countMovies([movies[0]]) -> 1
@@ -449,7 +475,9 @@ console.log(countMovies(movies)); // 16
 // ----- 2. filter by genre -----
 // Write `byGenre(db, genre)` -> array of movies in that genre.
 // your code here
-
+// function byGenre(db, genre) {
+//   return db.filter;
+// }
 // console.log(byGenre(movies, "scifi").length);
 // TEST 1:  byGenre(movies,"scifi").length   ->  3
 // TEST 2:  byGenre(movies,"anime").length   ->  2
