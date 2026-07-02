@@ -306,9 +306,9 @@ const inventory = [
 ];
 // // your code here
 function inStockNames(items) {
-  let inStockNames = items.filter((stock) => stock > 0);
-  const obj = inventory[0].name;
-  return obj;
+  // let inStockNames = items.filter((items) => items.stock > 0);
+  // return inStockNames.map((items)=> items.name)
+  return items.filter((items) => items.stock > 0).map((items) => items.name);
 }
 console.log(inStockNames(inventory));
 // TEST 1:  inStockNames(inventory)                        ->  ["pen","bag"]
@@ -576,13 +576,15 @@ console.log(bestFirst(movies).length);
 // ----- 9. chain — filter + sort + map -----
 // Write `bestActionTitles(db)` -> action movies, sorted best-first, titles only.
 // your code here
-// function bestActionTitles1(db) {
-//   let bestActionTitles1 = db.filter((item) => item.bestActionTitles1);
-//    let bestActionTitles1 = sort((a, b) => b.rating - a.rating);
-//   let bestActionTitles1= map((item) => item.title);
-//   return bestActionTitles1;
-// }
-// console.log(bestActionTitles1(movies));
+function bestActionTitles(db) {
+  return db
+    .filter((item) => item.genre === "action")
+    .sort((a, b) => a - b)
+    .map((item) => item.title);
+}
+console.log(bestActionTitles(movies)[0]);
+console.log(bestActionTitles(movies).length);
+console.log(bestActionTitles(movies)[3]);
 // TEST 1:  bestActionTitles(movies)[0]       ->  "The Dark Knight"
 // TEST 2:  bestActionTitles(movies).length   ->  4
 // TEST 3:  bestActionTitles(movies)[3]       ->  "Mad Max: Fury Road"
@@ -591,12 +593,24 @@ console.log(bestFirst(movies).length);
 // Write `countByGenre(db)` -> object mapping each genre to how many movies.
 // Hint: result = {}; loop; result[m.genre] = (result[m.genre] || 0) + 1.
 // your code here
-
-// console.log(countByGenre(movies));
+function countByGenre(db) {
+  let result = {};
+  for (let movie of db) {
+    result[movie.genre] = (result[movie.genre] || 0) + 1;
+  }
+  return result;
+  // db.reduce(function (acc, n) {
+  //   result[m.genre] = (result[m.genre] || 0) + 1;
+  // }, {});
+  // return result;
+}
+console.log(countByGenre(movies).drama);
+console.log(countByGenre(movies).action);
+console.log(countByGenre(movies).anime);
 // TEST 1:  countByGenre(movies).drama    ->  5
 // TEST 2:  countByGenre(movies).action   ->  4
 // TEST 3:  countByGenre(movies).anime    ->  2
-EmployeesDB;
+EmployeesDB: 3;
 
 /* ============================================================
    ARRAYS 4 — EMPLOYEES DATABASE (boss level)
@@ -741,6 +755,8 @@ function countEmployees(db) {
   return db.length;
 }
 console.log(countEmployees(employees)); // 15
+console.log(countEmployees([]));
+console.log(countEmployees([employees[0]]));
 // TEST 1:  countEmployees(employees)   ->  15
 // TEST 2:  countEmployees([])          ->  0
 // TEST 3:  countEmployees([employees[0]]) -> 1
@@ -748,8 +764,12 @@ console.log(countEmployees(employees)); // 15
 // ----- 2. filter by department -----
 // Write `byDept(db, dept)` -> array of employees in that department.
 // your code here
-
-// console.log(byDept(employees, "engineering").length);
+function byDept(db, dept) {
+  return db.filter((item) => item.dept === dept);
+}
+console.log(byDept(employees, "engineering").length);
+console.log(byDept(employees, "support").length);
+console.log(byDept(employees, "legal").length);
 // TEST 1:  byDept(employees,"engineering").length   ->  4
 // TEST 2:  byDept(employees,"support").length       ->  2
 // TEST 3:  byDept(employees,"legal").length         ->  0
@@ -757,8 +777,20 @@ console.log(countEmployees(employees)); // 15
 // ----- 3. filter + condition — high earners -----
 // Write `highEarners(db)` -> employees with salary > 90000.
 // your code here
-
-// console.log(highEarners(employees).length);
+function highEarners(db) {
+  return db.filter((item) => item.salary > 90000);
+}
+console.log(highEarners(employees).length);
+console.log(
+  highEarners(employees)
+    .map((e) => e.name)
+    .includes("Jon"),
+);
+console.log(
+  highEarners(employees)
+    .map((e) => e.name)
+    .includes("Omar"),
+);
 // TEST 1:  highEarners(employees).length                            ->  4
 // TEST 2:  highEarners(employees).map(e => e.name).includes("Jon")  ->  true
 // TEST 3:  highEarners(employees).map(e => e.name).includes("Omar") ->  false
@@ -766,8 +798,12 @@ console.log(countEmployees(employees)); // 15
 // ----- 4. map — just the names -----
 // Write `allNames(db)` -> array of every employee name.
 // your code here
-
-// console.log(allNames(employees)[0]);
+function allNames(db) {
+  return db.map((item) => item.name);
+}
+console.log(allNames(employees)[0]);
+console.log(allNames(employees).length);
+console.log(allNames(employees)[14]);
 // TEST 1:  allNames(employees)[0]       ->  "Sara"
 // TEST 2:  allNames(employees).length   ->  15
 // TEST 3:  allNames(employees)[14]      ->  "Zoe"
@@ -775,8 +811,12 @@ console.log(countEmployees(employees)); // 15
 // ----- 5. find by name -----
 // Write `findEmployee(db, name)` -> the one object, or undefined.
 // your code here
-
-// console.log(findEmployee(employees, "Eva").dept);
+function findEmployee(db, name) {
+  return db.find((item) => item.name === name);
+}
+console.log(findEmployee(employees, "Eva").dept);
+console.log(findEmployee(employees, "Eva").salary);
+console.log(findEmployee(employees, "Ghost"));
 // TEST 1:  findEmployee(employees,"Eva").dept     ->  "design"
 // TEST 2:  findEmployee(employees,"Eva").salary   ->  80000
 // TEST 3:  findEmployee(employees,"Ghost")        ->  undefined
@@ -784,8 +824,12 @@ console.log(countEmployees(employees)); // 15
 // ----- 6. reduce — total payroll -----
 // Write `totalPayroll(db)` -> sum of every salary.
 // your code here
-
-// console.log(totalPayroll(employees));
+function totalPayroll(db){
+  return db.reduce((acc, n) => acc + n.salary, 0)
+}
+console.log(totalPayroll(employees));
+console.log(totalPayroll([]))
+console.log(totalPayroll([{salary:100}]))
 // TEST 1:  totalPayroll(employees)         ->  1208000
 // TEST 2:  totalPayroll([])                ->  0
 // TEST 3:  totalPayroll([{salary:100}])    ->  100
