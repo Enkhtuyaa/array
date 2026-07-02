@@ -824,12 +824,12 @@ console.log(findEmployee(employees, "Ghost"));
 // ----- 6. reduce — total payroll -----
 // Write `totalPayroll(db)` -> sum of every salary.
 // your code here
-function totalPayroll(db){
-  return db.reduce((acc, n) => acc + n.salary, 0)
+function totalPayroll(db) {
+  return db.reduce((acc, n) => acc + n.salary, 0);
 }
 console.log(totalPayroll(employees));
-console.log(totalPayroll([]))
-console.log(totalPayroll([{salary:100}]))
+console.log(totalPayroll([]));
+console.log(totalPayroll([{ salary: 100 }]));
 // TEST 1:  totalPayroll(employees)         ->  1208000
 // TEST 2:  totalPayroll([])                ->  0
 // TEST 3:  totalPayroll([{salary:100}])    ->  100
@@ -837,8 +837,13 @@ console.log(totalPayroll([{salary:100}]))
 // ----- 7. average salary -----
 // Write `averageSalary(db)` -> mean salary, rounded with Math.round.
 // your code here
-
-// console.log(averageSalary(employees));
+function averageSalary(db) {
+  let total2 = db.reduce((acc, n) => acc + n.salary, 0);
+  return Math.round(total2 / db.length);
+}
+console.log(averageSalary(employees));
+console.log(averageSalary([{ salary: 100 }, { salary: 200 }]));
+console.log(averageSalary([{ salary: 50 }]));
 // TEST 1:  averageSalary(employees)                       ->  80533
 // TEST 2:  averageSalary([{salary:100},{salary:200}])     ->  150
 // TEST 3:  averageSalary([{salary:50}])                   ->  50
@@ -846,8 +851,20 @@ console.log(totalPayroll([{salary:100}]))
 // ----- 8. filter boolean — remote workers -----
 // Write `remoteWorkers(db)` -> employees where remote is true.
 // your code here
-
-// console.log(remoteWorkers(employees).length);
+function remoteWorkers(db) {
+  return db.filter((item) => item.remote);
+}
+console.log(remoteWorkers(employees).length);
+console.log(
+  remoteWorkers(employees)
+    .map((e) => e.name)
+    .includes("Sara"),
+);
+console.log(
+  remoteWorkers(employees)
+    .map((e) => e.name)
+    .includes("Ali"),
+);
 // TEST 1:  remoteWorkers(employees).length                            ->  8
 // TEST 2:  remoteWorkers(employees).map(e => e.name).includes("Sara") ->  true
 // TEST 3:  remoteWorkers(employees).map(e => e.name).includes("Ali")  ->  false
@@ -856,8 +873,12 @@ console.log(totalPayroll([{salary:100}]))
 // Write `topPaid(db)` -> NEW array sorted by salary, highest first.
 // Hint: [...db].sort((a,b) => b.salary - a.salary)
 // your code here
-
-// console.log(topPaid(employees)[0].name);
+function topPaid(db) {
+  return [...db].sort((a, b) => b.salary - a.salary);
+}
+console.log(topPaid(employees)[0].name);
+console.log(topPaid(employees)[0].salary);
+console.log(topPaid(employees)[14].name);
 // TEST 1:  topPaid(employees)[0].name      ->  "Jon"
 // TEST 2:  topPaid(employees)[0].salary    ->  130000
 // TEST 3:  topPaid(employees)[14].name     ->  "Leo"
@@ -865,8 +886,16 @@ console.log(totalPayroll([{salary:100}]))
 // ----- 10. chain — filter + sort + map -----
 // Write `engineerNamesByPay(db)` -> engineers, sorted highest-paid first, names only.
 // your code here
-
-// console.log(engineerNamesByPay(employees));
+function engineerNamesByPay(db) {
+  return db
+    .filter((item) => item.dept === "engineering")
+    .sort((a, b) => a.highestpaid - b.highestpaid)
+    .map((item) => item.name);
+}
+console.log(engineerNamesByPay(employees).length);
+console.log(engineerNamesByPay(employees)[0]);
+console.log(engineerNamesByPay(employees)[3]);
+// console.log(engineerNamesByPay(employees)[2]);
 // TEST 1:  engineerNamesByPay(employees)[0]       ->  "Jon"
 // TEST 2:  engineerNamesByPay(employees).length   ->  4
 // TEST 3:  engineerNamesByPay(employees)[3]       ->  "Sara"
@@ -875,12 +904,21 @@ console.log(totalPayroll([{salary:100}]))
 // Write `payrollByDept(db)` -> object mapping each dept to its TOTAL salary.
 // Hint: result = {}; loop; result[e.dept] = (result[e.dept] || 0) + e.salary.
 // your code here
+function payrollByDept(db) {
+  let result = {};
+  for (let e of db) {
+    result[e.dept] = (result[e.dept] || 0) + e.salary;
+  }
+  return result;
+}
 
-// console.log(payrollByDept(employees));
+console.log(payrollByDept(employees).engineering);
+console.log(payrollByDept(employees).support);
+console.log(payrollByDept(employees).sales);
 // TEST 1:  payrollByDept(employees).engineering   ->  440000
 // TEST 2:  payrollByDept(employees).support       ->  108000
 // TEST 3:  payrollByDept(employees).sales         ->  187000
-ProductsDB;
+ProductsDB: 4;
 
 /* ============================================================
    ARRAYS 5 — PRODUCTS DATABASE (boss level)
@@ -1025,6 +1063,8 @@ function countProducts(db) {
   return db.length;
 }
 console.log(countProducts(products)); // 15
+console.log(countProducts([]));
+console.log(countProducts([products[0]]));
 // TEST 1:  countProducts(products)   ->  15
 // TEST 2:  countProducts([])         ->  0
 // TEST 3:  countProducts([products[0]]) -> 1
@@ -1032,8 +1072,12 @@ console.log(countProducts(products)); // 15
 // ----- 2. filter by category -----
 // Write `byCategory(db, cat)` -> array of products in that category.
 // your code here
-
-// console.log(byCategory(products, "electronics").length);
+function byCategory(db, category) {
+  return db.filter((item) => item.category === category);
+}
+console.log(byCategory(products, "electronics").length);
+console.log(byCategory(products, "kitchen").length);
+console.log(byCategory(products, "toys").length);
 // TEST 1:  byCategory(products,"electronics").length   ->  5
 // TEST 2:  byCategory(products,"kitchen").length       ->  3
 // TEST 3:  byCategory(products,"toys").length          ->  0
@@ -1041,8 +1085,20 @@ console.log(countProducts(products)); // 15
 // ----- 3. filter + condition — in stock -----
 // Write `inStock(db)` -> products with stock > 0.
 // your code here
-
-// console.log(inStock(products).length);
+function inStock(db) {
+  return db.filter((item) => item.stock > 0);
+}
+console.log(inStock(products).length);
+console.log(
+  inStock(products)
+    .map((p) => p.name)
+    .includes("Pen"),
+);
+console.log(
+  inStock(products)
+    .map((p) => p.name)
+    .includes("Blender"),
+);
 // TEST 1:  inStock(products).length                            ->  14
 // TEST 2:  inStock(products).map(p => p.name).includes("Pen")  ->  true
 // TEST 3:  inStock(products).map(p => p.name).includes("Blender") -> false
@@ -1050,8 +1106,12 @@ console.log(countProducts(products)); // 15
 // ----- 4. map — just the names -----
 // Write `allNames(db)` -> array of every product name.
 // your code here
-
-// console.log(allNames(products)[0]);
+function allNames(db) {
+  return db.map((item) => item.name);
+}
+console.log(allNames(products)[0]);
+console.log(allNames(products).length);
+console.log(allNames(products)[14]);
 // TEST 1:  allNames(products)[0]       ->  "Laptop"
 // TEST 2:  allNames(products).length   ->  15
 // TEST 3:  allNames(products)[14]      ->  "Blender"
@@ -1059,8 +1119,12 @@ console.log(countProducts(products)); // 15
 // ----- 5. find by name -----
 // Write `findProduct(db, name)` -> the one object, or undefined.
 // your code here
-
-// console.log(findProduct(products, "Watch").price);
+function findProduct(db, name) {
+  return db.find((item) => item.name === name);
+}
+console.log(findProduct(products, "Watch").price);
+console.log(findProduct(products, "Watch").rating);
+console.log(findProduct(products, "Nope"));
 // TEST 1:  findProduct(products,"Watch").price    ->  250
 // TEST 2:  findProduct(products,"Watch").rating   ->  4.8
 // TEST 3:  findProduct(products,"Nope")           ->  undefined
@@ -1068,8 +1132,12 @@ console.log(countProducts(products)); // 15
 // ----- 6. reduce — total stock -----
 // Write `totalStock(db)` -> sum of every product's stock.
 // your code here
-
-// console.log(totalStock(products));
+function totalStock(db) {
+  return db.reduce((acc, n) => acc + n.stock, 0);
+}
+console.log(totalStock(products));
+console.log(totalStock([]));
+console.log(totalStock([{ stock: 3 }, { stock: 4 }]));
 // TEST 1:  totalStock(products)          ->  1095
 // TEST 2:  totalStock([])                ->  0
 // TEST 3:  totalStock([{stock:3},{stock:4}]) -> 7
@@ -1077,8 +1145,20 @@ console.log(countProducts(products)); // 15
 // ----- 7. filter boolean — on sale -----
 // Write `onSaleItems(db)` -> products where onSale is true.
 // your code here
-
-// console.log(onSaleItems(products).length);
+function onSaleItems(db) {
+  return db.filter((item) => item.onSale);
+}
+console.log(onSaleItems(products).length);
+console.log(
+  onSaleItems(products)
+    .map((p) => p.name)
+    .includes("Phone"),
+);
+console.log(
+  onSaleItems(products)
+    .map((p) => p.name)
+    .includes("Laptop"),
+);
 // TEST 1:  onSaleItems(products).length                             ->  7
 // TEST 2:  onSaleItems(products).map(p => p.name).includes("Phone") ->  true
 // TEST 3:  onSaleItems(products).map(p => p.name).includes("Laptop")-> false
@@ -1086,8 +1166,20 @@ console.log(countProducts(products)); // 15
 // ----- 8. filter + condition — expensive -----
 // Write `expensive(db)` -> products with price > 200.
 // your code here
-
-// console.log(expensive(products).length);
+function expensive(db) {
+  return db.filter((item) => item.price > 200);
+}
+console.log(expensive(products).length);
+console.log(
+  expensive(products)
+    .map((p) => p.name)
+    .includes("Watch"),
+);
+console.log(
+  expensive(products)
+    .map((p) => p.name)
+    .includes("Lamp"),
+);
 // TEST 1:  expensive(products).length                              ->  5
 // TEST 2:  expensive(products).map(p => p.name).includes("Watch")  ->  true
 // TEST 3:  expensive(products).map(p => p.name).includes("Lamp")   ->  false
@@ -1096,8 +1188,12 @@ console.log(countProducts(products)); // 15
 // Write `cheapest(db)` -> NEW array sorted by price, lowest first.
 // Hint: [...db].sort((a,b) => a.price - b.price)
 // your code here
-
-// console.log(cheapest(products)[0].name);
+function cheapest(db) {
+  return [...db].sort((a, b) => a.price - b.price);
+}
+console.log(cheapest(products)[0].name);
+console.log(cheapest(products)[0].price);
+console.log(cheapest(products)[14].name);
 // TEST 1:  cheapest(products)[0].name     ->  "Pen"
 // TEST 2:  cheapest(products)[0].price    ->  2
 // TEST 3:  cheapest(products)[14].name    ->  "Laptop"
@@ -1106,8 +1202,15 @@ console.log(countProducts(products)); // 15
 // Write `electronicsOnSaleByPrice(db)` -> electronics that are on sale,
 // sorted most-expensive first, names only.
 // your code here
-
-// console.log(electronicsOnSaleByPrice(products));
+function electronicsOnSaleByPrice(db) {
+  return db
+    .filter((item) => item.onSale)
+    .sort((a, b) => a.most - expensive - b.most - expensive)
+    .map((item) => item.name);
+}
+console.log(electronicsOnSaleByPrice(products)[0]);
+console.log(electronicsOnSaleByPrice(products).length);
+console.log(electronicsOnSaleByPrice(products)[1]);
 // TEST 1:  electronicsOnSaleByPrice(products)[0]       ->  "Phone"
 // TEST 2:  electronicsOnSaleByPrice(products).length   ->  3
 // TEST 3:  electronicsOnSaleByPrice(products)[2]       ->  "Headphones"
@@ -1116,8 +1219,12 @@ console.log(countProducts(products)); // 15
 // Write `inventoryValue(db)` -> sum of (price * stock) across all products.
 // Hint: db.reduce((acc, p) => acc + p.price * p.stock, 0)
 // your code here
-
-// console.log(inventoryValue(products));
+function inventoryValue(db) {
+  return db.reduce((acc, p) => acc + p.price * p.stock, 0);
+}
+console.log(inventoryValue(products));
+console.log(inventoryValue([]));
+console.log(inventoryValue([{ price: 10, stock: 2 }]));
 // TEST 1:  inventoryValue(products)                  ->  43940
 // TEST 2:  inventoryValue([])                        ->  0
 // TEST 3:  inventoryValue([{price:10,stock:2}])      ->  20
